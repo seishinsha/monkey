@@ -6,12 +6,17 @@ package body Lexer.Test is
 
    procedure Test_Next_Token is
       Input : String :=
-        "let five = 5;" & Character'Val (10) & "let ten= 10;" &
-        Character'Val (10) & Character'Val (10) & "let add = fn(x, y) {" &
-        Character'Val (10) & "  x + y;" & Character'Val (10) & "};" &
-        Character'Val (10) & Character'Val (10) &
-        "let result = add(five,ten);";
-      Tests : array (Positive range <>) of Token_Type :=
+        "let five = 5;"                & ASCII.LF &
+        "let ten= 10;"                 & ASCII.LF &
+        ""                             & ASCII.LF &
+        "let add = fn(x, y) {"         & ASCII.LF &
+        "  x + y;"                     & ASCII.LF &
+        "};"                           & ASCII.LF &
+        ""                             & ASCII.LF &
+        "let result = add(five,ten);"  & ASCII.LF &
+        "!-/*5;"                       & ASCII.LF &
+        "5 < 19 > 5;"                  & ASCII.LF;
+      Tests : array (Positive range <>) of Token_Type := 
         ((LET, To_Unbounded_String ("let")),
          (IDENT, To_Unbounded_String ("five")),
          (ASSIGN, To_Unbounded_String ("=")),
@@ -48,6 +53,18 @@ package body Lexer.Test is
          (IDENT, To_Unbounded_String ("ten")),
          (RPAREN, To_Unbounded_String (")")),
          (SEMICOLON, To_Unbounded_String (";")),
+         (BANG, To_Unbounded_String ("!")),
+         (MINUS, To_Unbounded_String ("-")),
+         (SLASH, To_Unbounded_String ("/")),
+         (ASTERISK, To_Unbounded_String ("*")),
+         (INT, To_Unbounded_String ("5")),
+         (SEMICOLON, To_Unbounded_String (";")),
+         (INT, To_Unbounded_String ("5")),
+         (LT, To_Unbounded_String ("<")),
+         (INT, To_Unbounded_String ("19")),
+         (GT, To_Unbounded_String (">")),
+         (INT, To_Unbounded_String ("5")),
+         (SEMICOLON, To_Unbounded_String (";")),
          (EOF, To_Unbounded_String ("")));
       Lexer : Lexer_Type := New_Lexer (To_Unbounded_String (Input));
       Token : Token_Type;
@@ -64,9 +81,9 @@ package body Lexer.Test is
          if not (Token.Literal = Tests (I).Literal) then
             Put_Line
               ("Tests (" & Positive'Image (I) &
-               ") - Token literal wrong. Expected=" &
-               To_String (Tests (I).Literal) & ", Got=" &
-               To_String (Token.Literal));
+               ") - Token literal wrong. Expected=""" &
+               To_String (Tests (I).Literal) & """, Got=""" &
+               To_String (Token.Literal) & """");
          end if;
       end loop;
 

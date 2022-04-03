@@ -78,16 +78,28 @@ package body Lexer is
       case Lexer.Ch is
          when '=' =>
             Token := (ASSIGN, 1 * Lexer.Ch);
+         when '+' =>
+            Token := (PLUS, 1 * Lexer.Ch);
+         when '-' =>
+            Token := (MINUS, 1 * Lexer.Ch);
+         when '!' =>
+            Token := (BANG, 1 * Lexer.Ch);
+         when '/' =>
+            Token := (SLASH, 1 * Lexer.Ch);
+         when '*' =>
+            Token := (ASTERISK, 1 * Lexer.Ch);
+         when '<' =>
+            Token := (LT, 1 * Lexer.Ch);
+         when '>' =>
+            Token := (GT, 1 * Lexer.Ch);
+         when ',' =>
+            Token := (COMMA, 1 * Lexer.Ch);
          when ';' =>
             Token := (SEMICOLON, 1 * Lexer.Ch);
          when '(' =>
             Token := (LPAREN, 1 * Lexer.Ch);
          when ')' =>
             Token := (RPAREN, 1 * Lexer.Ch);
-         when ',' =>
-            Token := (COMMA, 1 * Lexer.Ch);
-         when '+' =>
-            Token := (PLUS, 1 * Lexer.Ch);
          when '{' =>
             Token := (LBRACE, 1 * Lexer.Ch);
          when '}' =>
