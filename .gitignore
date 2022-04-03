@@ -3,3 +3,9 @@
 
 # Ada Library Information
 *.ali
+
+# Other files
+*.stderr
+*.stdout
+*.bexch
+b__*
