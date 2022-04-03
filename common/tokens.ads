@@ -31,8 +31,13 @@ package Tokens is
       RBRACE,
 
       -- Keywords
-      FUNCT,
-      LET
+      K_FUNCTION,
+      K_LET,
+      K_TRUE,
+      K_FALSE,
+      K_IF,
+      K_ELSE,
+      K_RETURN
       );
 
    type Token_Type is record

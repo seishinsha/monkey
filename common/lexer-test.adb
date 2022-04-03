@@ -15,22 +15,28 @@ package body Lexer.Test is
         ""                             & ASCII.LF &
         "let result = add(five,ten);"  & ASCII.LF &
         "!-/*5;"                       & ASCII.LF &
-        "5 < 19 > 5;"                  & ASCII.LF;
+        "5 < 19 > 5;"                  & ASCII.LF &
+        ""                             & ASCII.LF &
+        "if (5 < 10) {"                & ASCII.LF &
+        "  return true;"               & ASCII.LF &
+        "} else {"                     & ASCII.LF &
+        "  return false;"              & ASCII.LF &
+        "}"                            & ASCII.LF;
       Tests : array (Positive range <>) of Token_Type := 
-        ((LET, To_Unbounded_String ("let")),
+        ((K_LET, To_Unbounded_String ("let")),
          (IDENT, To_Unbounded_String ("five")),
          (ASSIGN, To_Unbounded_String ("=")),
          (INT, To_Unbounded_String ("5")),
          (SEMICOLON, To_Unbounded_String (";")),
-         (LET, To_Unbounded_String ("let")),
+         (K_LET, To_Unbounded_String ("let")),
          (IDENT, To_Unbounded_String ("ten")),
          (ASSIGN, To_Unbounded_String ("=")),
          (INT, To_Unbounded_String ("10")),
          (SEMICOLON, To_Unbounded_String (";")),
-         (LET, To_Unbounded_String ("let")),
+         (K_LET, To_Unbounded_String ("let")),
          (IDENT, To_Unbounded_String ("add")),
          (ASSIGN, To_Unbounded_String ("=")),
-         (FUNCT, To_Unbounded_String ("fn")),
+         (K_FUNCTION, To_Unbounded_String ("fn")),
          (LPAREN, To_Unbounded_String ("(")),
          (IDENT, To_Unbounded_String ("x")),
          (COMMA, To_Unbounded_String (",")),
@@ -43,7 +49,7 @@ package body Lexer.Test is
          (SEMICOLON, To_Unbounded_String (";")),
          (RBRACE, To_Unbounded_String ("}")),
          (SEMICOLON, To_Unbounded_String (";")),
-         (LET, To_Unbounded_String ("let")),
+         (K_LET, To_Unbounded_String ("let")),
          (IDENT, To_Unbounded_String ("result")),
          (ASSIGN, To_Unbounded_String ("=")),
          (IDENT, To_Unbounded_String ("add")),
@@ -65,6 +71,23 @@ package body Lexer.Test is
          (GT, To_Unbounded_String (">")),
          (INT, To_Unbounded_String ("5")),
          (SEMICOLON, To_Unbounded_String (";")),
+         (K_IF, To_Unbounded_String ("if")),
+         (LPAREN, To_Unbounded_String ("(")),
+         (INT, To_Unbounded_String ("5")),
+         (LT, To_Unbounded_String ("<")),
+         (INT, To_Unbounded_String ("10")),
+         (RPAREN, To_Unbounded_String (")")),
+         (LBRACE, To_Unbounded_String ("{")),
+         (K_RETURN, To_Unbounded_String ("return")),
+         (K_TRUE, To_Unbounded_String ("true")),
+         (SEMICOLON, To_Unbounded_String (";")),
+         (RBRACE, To_Unbounded_String ("}")),
+         (K_ELSE, To_Unbounded_String ("else")),
+         (LBRACE, To_Unbounded_String ("{")),
+         (K_RETURN, To_Unbounded_String ("return")),
+         (K_FALSE, To_Unbounded_String ("false")),
+         (SEMICOLON, To_Unbounded_String (";")),
+         (RBRACE, To_Unbounded_String ("}")),
          (EOF, To_Unbounded_String ("")));
       Lexer : Lexer_Type := New_Lexer (To_Unbounded_String (Input));
       Token : Token_Type;
