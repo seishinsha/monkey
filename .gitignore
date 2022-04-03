@@ -9,3 +9,6 @@
 *.stdout
 *.bexch
 b__*
+
+# Binaries
+test_suite

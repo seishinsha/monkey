@@ -1,13 +1,13 @@
 with Ada.Strings.Unbounded; use Ada.Strings.Unbounded;
 
-with Tokens;
+with Tokens; use Tokens;
 
 package body Lexer is
 
    -- Reads the next character and advance the position in the input string
    procedure Read_Char (Lexer : in out Lexer_Type) is
    begin
-      if Lexer.Read_Position >= Lexer.Input'Size then
+      if Lexer.Read_Position > Length (Lexer.Input) then
          Lexer.Ch := Character'Val (0);
       else
          Lexer.Ch := Element (Lexer.Input, Lexer.Read_Position);
@@ -24,9 +24,32 @@ package body Lexer is
       return Lexer;
    end New_Lexer;
 
-   function Next_Token (Lexer : in out Lexer_Type) return Tokens.Token_Type is
-      Token : Tokens.Token_Type := (Tokens.ILLEGAL, Null_Unbounded_String);
+   function Next_Token (Lexer : in out Lexer_Type) return Token_Type is
+      Token : Token_Type;
    begin
+      case Lexer.Ch is
+         when '=' =>
+            Token := (ASSIGN, 1 * Lexer.Ch);
+         when ';' =>
+            Token := (SEMICOLON, 1 * Lexer.Ch);
+         when '(' =>
+            Token := (LPAREN, 1 * Lexer.Ch);
+         when ')' =>
+            Token := (RPAREN, 1 * Lexer.Ch);
+         when ',' =>
+            Token := (COMMA, 1 * Lexer.Ch);
+         when '+' =>
+            Token := (PLUS, 1 * Lexer.Ch);
+         when '{' =>
+            Token := (LBRACE, 1 * Lexer.Ch);
+         when '}' =>
+            Token := (RBRACE, 1 * Lexer.Ch);
+         when Character'Val (0) =>
+            Token := (EOF, To_Unbounded_String (""));
+         when others =>
+            Token := (ILLEGAL, Null_Unbounded_String);
+      end case;
+      Read_Char (Lexer);
       return Token;
    end Next_Token;
 
