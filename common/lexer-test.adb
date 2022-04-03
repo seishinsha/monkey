@@ -108,16 +108,13 @@ package body Lexer.Test is
          Token := Next_Token (Lexer);
          if Token.Kind /= Tests (I).Kind then
             Put_Line
-              ("Tests (" & Positive'Image (I) &
-               ") - Token kind wrong. Expected=" & Tests (I).Kind'Image &
-               ", Got=" & Token.Kind'Image);
+              ("Tests (" & Positive'Image (I) & ") - Token kind wrong." &
+              " Expected=" & Tests (I).Kind'Image & ", Got=" & Token.Kind'Image);
          end if;
          if not (Token.Literal = Tests (I).Literal) then
             Put_Line
-              ("Tests (" & Positive'Image (I) &
-               ") - Token literal wrong. Expected=""" &
-               To_String (Tests (I).Literal) & """, Got=""" &
-               To_String (Token.Literal) & """");
+              ("Tests (" & Positive'Image (I) & ") - Token literal wrong."&
+              " Expected=""" & To_String (Tests (I).Literal) & """, Got=""" & To_String (Token.Literal) & """");
          end if;
       end loop;
 
