@@ -11,4 +11,6 @@ package Tokens is
       Literal : Unbounded_String;
    end record;
 
+   function Lookup_Identifier (Test : Unbounded_String) return Token_Kind;
+
 end Tokens;
