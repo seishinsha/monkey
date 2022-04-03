@@ -22,14 +22,20 @@ package body Lexer is
       end if;
    end Is_Digit;
 
+   -- Reads the next character not advancing the position in the input string
+   function Peek_Char (Lexer : in Lexer_Type) return Character is
+   begin
+      if Lexer.Read_Position > Length (Lexer.Input) then
+         return Character'Val (0);
+      else
+         return Element (Lexer.Input, Lexer.Read_Position);
+      end if;
+   end Peek_Char;
+
    -- Reads the next character and advance the position in the input string
    procedure Read_Char (Lexer : in out Lexer_Type) is
    begin
-      if Lexer.Read_Position > Length (Lexer.Input) then
-         Lexer.Ch := Character'Val (0);
-      else
-         Lexer.Ch := Element (Lexer.Input, Lexer.Read_Position);
-      end if;
+      Lexer.Ch            := Peek_Char (Lexer);
       Lexer.Position      := Lexer.Read_Position;
       Lexer.Read_Position := Lexer.Read_Position + 1;
    end Read_Char;
@@ -72,18 +78,30 @@ package body Lexer is
    end New_Lexer;
 
    function Next_Token (Lexer : in out Lexer_Type) return Token_Type is
-      Token : Token_Type := (ILLEGAL, Null_Unbounded_String);
+      Token  : Token_Type := (ILLEGAL, Null_Unbounded_String);
+      Old_Ch : Character;
    begin
       Skip_Whitespace (Lexer);
+      Old_ch := Lexer.Ch;
       case Lexer.Ch is
          when '=' =>
-            Token := (ASSIGN, 1 * Lexer.Ch);
+            if Peek_Char (Lexer) = '=' then
+               Read_Char (Lexer);
+               Token := (EQ, 1 * Old_Ch & Lexer.Ch);
+            else
+               Token := (ASSIGN, 1 * Lexer.Ch);
+            end if;
          when '+' =>
             Token := (PLUS, 1 * Lexer.Ch);
          when '-' =>
             Token := (MINUS, 1 * Lexer.Ch);
          when '!' =>
-            Token := (BANG, 1 * Lexer.Ch);
+            if Peek_Char (Lexer) = '=' then
+               Read_Char (Lexer);
+               Token := (NOT_EQ, 1 * Old_Ch & Lexer.Ch);
+            else
+               Token := (BANG, 1 * Lexer.Ch);
+            end if;
          when '/' =>
             Token := (SLASH, 1 * Lexer.Ch);
          when '*' =>

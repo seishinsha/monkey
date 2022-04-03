@@ -21,7 +21,10 @@ package body Lexer.Test is
         "  return true;"               & ASCII.LF &
         "} else {"                     & ASCII.LF &
         "  return false;"              & ASCII.LF &
-        "}"                            & ASCII.LF;
+        "}"                            & ASCII.LF &
+        ""                             & ASCII.LF &
+        "10 == 10;"                    & ASCII.LF &
+        "10 != 9;"                     & ASCII.LF;
       Tests : array (Positive range <>) of Token_Type := 
         ((K_LET, To_Unbounded_String ("let")),
          (IDENT, To_Unbounded_String ("five")),
@@ -88,6 +91,14 @@ package body Lexer.Test is
          (K_FALSE, To_Unbounded_String ("false")),
          (SEMICOLON, To_Unbounded_String (";")),
          (RBRACE, To_Unbounded_String ("}")),
+         (INT, To_Unbounded_String ("10")),
+         (EQ, To_Unbounded_String ("==")),
+         (INT, To_Unbounded_String ("10")),
+         (SEMICOLON, To_Unbounded_String (";")),
+         (INT, To_Unbounded_String ("10")),
+         (NOT_EQ, To_Unbounded_String ("!=")),
+         (INT, To_Unbounded_String ("9")),
+         (SEMICOLON, To_Unbounded_String (";")),
          (EOF, To_Unbounded_String ("")));
       Lexer : Lexer_Type := New_Lexer (To_Unbounded_String (Input));
       Token : Token_Type;
