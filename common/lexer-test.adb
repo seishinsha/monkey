@@ -5,15 +5,46 @@ with Tokens;                use Tokens;
 package body Lexer.Test is
 
    procedure Test_Next_Token is
-      Input : String                                  := "=+(){},;";
+      Input : String :=
+        "let five = 5;" & Character'Val (10) & "let ten= 10;" &
+        Character'Val (10) & Character'Val (10) & "let add = fn(x, y) {" &
+        Character'Val (10) & "  x + y;" & Character'Val (10) & "};" &
+        Character'Val (10) & Character'Val (10) &
+        "let result = add(five,ten);";
       Tests : array (Positive range <>) of Token_Type :=
-        ((ASSIGN, To_Unbounded_String ("=")),
-         (PLUS, To_Unbounded_String ("+")),
+        ((LET, To_Unbounded_String ("let")),
+         (IDENT, To_Unbounded_String ("five")),
+         (ASSIGN, To_Unbounded_String ("=")), (INT, To_Unbounded_String ("5")),
+         (SEMICOLON, To_Unbounded_String (";")),
+         (LET, To_Unbounded_String ("let")),
+         (IDENT, To_Unbounded_String ("ten")),
+         (ASSIGN, To_Unbounded_String ("=")),
+         (INT, To_Unbounded_String ("10")),
+         (SEMICOLON, To_Unbounded_String (";")),
+         (LET, To_Unbounded_String ("let")),
+         (IDENT, To_Unbounded_String ("add")),
+         (ASSIGN, To_Unbounded_String ("=")),
+         (FUNCT, To_Unbounded_String ("fn")),
          (LPAREN, To_Unbounded_String ("(")),
+         (IDENT, To_Unbounded_String ("x")),
+         (COMMA, To_Unbounded_String (",")),
+         (IDENT, To_Unbounded_String ("y")),
          (RPAREN, To_Unbounded_String (")")),
          (LBRACE, To_Unbounded_String ("{")),
+         (IDENT, To_Unbounded_String ("x")), (PLUS, To_Unbounded_String ("+")),
+         (IDENT, To_Unbounded_String ("y")),
+         (SEMICOLON, To_Unbounded_String (";")),
          (RBRACE, To_Unbounded_String ("}")),
+         (LET, To_Unbounded_String ("let")),
+         (IDENT, To_Unbounded_String ("result")),
+         (ASSIGN, To_Unbounded_String ("=")),
+         (IDENT, To_Unbounded_String ("add")),
+         (LPAREN, To_Unbounded_String ("(")),
+         (IDENT, To_Unbounded_String ("five")),
          (COMMA, To_Unbounded_String (",")),
+         (IDENT, To_Unbounded_String ("ten")),
+         (RPAREN, To_Unbounded_String (")")),
+         (RPAREN, To_Unbounded_String (")")),
          (SEMICOLON, To_Unbounded_String (";")),
          (EOF, To_Unbounded_String ("")));
       Lexer : Lexer_Type := New_Lexer (To_Unbounded_String (Input));
