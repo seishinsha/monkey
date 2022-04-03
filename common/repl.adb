@@ -10,10 +10,13 @@ package body REPL is
    procedure Start is
       The_Lexer : Lexer.Lexer_Type;
       The_Token : Tokens.Token_Type;
+      The_Line  : Unbounded_String;
    begin
       loop
          Put (Prompt);
-         The_Lexer := Lexer.New_Lexer (To_Unbounded_String(Get_Line));
+         The_Line := To_Unbounded_String(Get_Line);
+         exit when Length(The_Line) = 0;
+         The_Lexer := Lexer.New_Lexer (The_Line);
          loop
             The_Token := Lexer.Next_Token (The_Lexer);
             exit when The_Token.Kind = Tokens.EOF;
